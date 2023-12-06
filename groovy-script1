@@ -1,0 +1,25 @@
+pipeline {
+    agent { label "Cal-Project"}
+
+    stages {
+        stage('git clone') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Vinitha-Nayak/Antique-Cafe-project.git'
+            }
+        }
+        stage('install httpd') {
+            steps {
+               sh 'yum install httpd -y'
+               sh 'systemctl start httpd'
+               sh 'systemctl enable httpd'
+            }
+        }
+        stage('cp src to destin') {
+            steps {
+                sh 'cd /var/jenkins/workspace/Cafe-Httpd/'
+                sh 'ls'
+                sh 'cp -r /var/jenkins/workspace/Cafe-Httpd/* /var/www/html/'
+            }
+        }
+    }
+}
